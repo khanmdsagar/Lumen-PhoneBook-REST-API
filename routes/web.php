@@ -1,14 +1,20 @@
 <?php
-
 $router->get('/', 'Controller@home');
 
-$router->post('/insertData', 'Controller@insertData');
+$router->post('/insertData', ['middleware' => 'auth', 'uses' => 'Controller@insertData']);
 
-$router->get('/selectData', 'Controller@selectData');
+$router->post('/selectData',  ['middleware' => 'auth', 'uses' => 'Controller@selectData']);
 
-$router->post('/updateData/{id}', 'Controller@updateData');
+$router->post('/updateData', ['middleware' => 'auth', 'uses' => 'Controller@updateData']);
 
-$router->post('/deleteData/{id}', 'Controller@deleteData');
+$router->post('/deleteData', ['middleware' => 'auth', 'uses' => 'Controller@deleteData']);
 
-$router->get('/searchData/{name}', 'Controller@searchData');
+$router->post('/searchData', ['middleware' => 'auth', 'uses' => 'Controller@searchData']);
+
+
+
+//login & registration
+$router->post('/registration', 'registrationController@registration');
+
+$router->post('/login', 'loginController@login');
 
