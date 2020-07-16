@@ -1,20 +1,22 @@
 <?php
 $router->get('/', 'Controller@home');
 
-$router->post('/insertData', ['middleware' => 'auth', 'uses' => 'Controller@insertData']);
+$router->post('/onInsert', ['middleware' => 'auth', 'uses' => 'Controller@insertData']);
 
-$router->post('/selectData',  ['middleware' => 'auth', 'uses' => 'Controller@selectData']);
+$router->post('/onSelect',  ['middleware' => 'auth', 'uses' => 'Controller@selectData']);
 
-$router->post('/updateData', ['middleware' => 'auth', 'uses' => 'Controller@updateData']);
+$router->post('/onUpdate', ['middleware' => 'auth', 'uses' => 'Controller@updateData']);
 
-$router->post('/deleteData', ['middleware' => 'auth', 'uses' => 'Controller@deleteData']);
+$router->post('/onDelete', ['middleware' => 'auth', 'uses' => 'Controller@deleteData']);
 
-$router->post('/searchData', ['middleware' => 'auth', 'uses' => 'Controller@searchData']);
+$router->post('/onSearch', ['middleware' => 'auth', 'uses' => 'Controller@searchData']);
+
+$router->post('/onFileUpload', ['middleware' => 'auth', 'uses' => 'Controller@onFileUpload']);
 
 
 
 //login & registration
-$router->post('/registration', 'registrationController@registration');
+$router->post('/onRegistration', 'registrationController@registration');
 
-$router->post('/login', 'loginController@login');
+$router->post('/onLogin', 'loginController@login');
 

@@ -25,6 +25,9 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
+// SERVICE ALIASES
+class_alias(\Intervention\Image\Facades\Image::class, 'Image');
+
 $app->withEloquent();
 
 /*
@@ -95,6 +98,9 @@ $app->routeMiddleware([
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProvider::class);
+
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

@@ -20,6 +20,7 @@ class CreatePeoplesTable extends Migration
         $table->string('phone');
         $table->string('email');
         $table->string('user_email');
+        $table->string('photo');
     });
     }
 

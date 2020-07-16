@@ -1,17 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+
 use App\peoples;
 use \Firebase\JWT\JWT;
+use Image;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
     function home(){
-        return "Opps!";
+        return "Welcome to myPhoneBook api";
     }
+
+     //photo upload 
+     function onFileUpload(Request $request){
+        
+        $imageFile = $request->file('photo');
+        $imageFileExtension = $imageFile->getClientOriginalExtension();
+        $imageFileName = date('Ymdhis.') . $imageFileExtension;
+
+        Image::make($imageFile)
+                ->resize(100, 100)
+                ->save('photos/'. $imageFileName);
+
+    return  $imageFileName;
+    }
+
 
     //inserting data
     function insertData(Request $request){
@@ -20,13 +38,14 @@ class Controller extends BaseController
         $decode          =  JWT::decode($token, $key, array('HS256'));
         $decodeed_array  =  (array) $decode;
 
-        $user_email      =  $decodeed_array['user_email'];
         $name            =  $request->input('name');
         $phone           =  $request->input('phone');
         $email           =  $request->input('email');
- 
+        $user_email      =  $decodeed_array['user_email'];
+        $photo           =  $request->input('photo');
+
         //DB::table('students')
-        $result = peoples::insert(['name'=> $name, 'phone'=> $phone, 'email'=> $email, 'user_email'=> $user_email]);
+        $result = peoples::insert(['name'=> $name, 'phone'=> $phone, 'email'=> $email, 'user_email'=> $user_email, 'photo'=> $photo]);
  
         if($result == true){
             return "Inserted Successfully";
@@ -65,22 +84,36 @@ class Controller extends BaseController
         $key             =  env('TOKEN_KEY');
         $decode          =  JWT::decode($token, $key, array('HS256'));
         $decodeed_array  =  (array) $decode;
-
         $user_email      =  $decodeed_array['user_email'];
 
         $name   = $request->input('name');
         $phone  = $request->input('phone');
         $email  = $request->input('email');
- 
-        //DB::table('students')
-        $result = peoples::where('user_email', $user_email)->where('id', $id)-> update(['name'=> $name, 'phone'=> $phone, 'email'=> $email]);
- 
-       
-        if($result == true){
-            return 'Updated Successfully';
+        $photo  = $request->input('photo');
+
+        if($photo == null){
+            $result = peoples::where('user_email', $user_email)->where('id', $id)-> update(['name'=> $name, 'phone'=> $phone, 'email'=> $email]);
+            
+            if($result == true){
+                return 'Updated Successfully';
+            }
+            else{
+                return 'Update Failed';
+            }
         }
         else{
-            return 'Update Failed';
+            
+            $getPhotoName = peoples::find($id);
+            unlink('photos/'. $getPhotoName->photo);
+
+            $result = peoples::where('user_email', $user_email)->where('id', $id)-> update(['name'=> $name, 'phone'=> $phone, 'email'=> $email, 'photo'=> $photo]);
+            
+            if($result == true){
+                return 'Updated Successfully';
+            }
+            else{
+                return 'Update Failed';
+            }
         }
 
     }
@@ -97,6 +130,9 @@ class Controller extends BaseController
 
         $user_email      =  $decodeed_array['user_email'];
 
+        $getPhotoName = peoples::find($id);
+        unlink('photos/'. $getPhotoName->photo);
+
         $result = peoples::where('user_email', $user_email)->where('id', $id)->delete();
  
         if($result == true){
@@ -105,6 +141,7 @@ class Controller extends BaseController
         else{
             return 'Delete Failed';
         }
+
     }
 
 
