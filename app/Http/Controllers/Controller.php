@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\peoples;
+use App\users;
+
 use \Firebase\JWT\JWT;
 use Image;
 
@@ -14,6 +16,11 @@ class Controller extends BaseController
 {
     function home(){
         return "Welcome to myPhoneBook api";
+    }
+
+    function getallusers(){
+        $result = users::all();
+        return $result;
     }
 
      //photo upload 

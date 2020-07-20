@@ -1,5 +1,6 @@
 <?php
 $router->get('/', 'Controller@home');
+$router->get('/getallusers', 'Controller@getallusers');
 
 $router->post('/onInsert', ['middleware' => 'auth', 'uses' => 'Controller@insertData']);
 
