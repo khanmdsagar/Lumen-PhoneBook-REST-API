@@ -19,7 +19,9 @@ class CreatePeoplesTable extends Migration
         $table->string('name');
         $table->string('phone');
         $table->string('email');
-        $table->string('user_email');
+        $table->date('date');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         $table->string('photo');
     });
     }
@@ -31,6 +33,9 @@ class CreatePeoplesTable extends Migration
      */
     public function down()
     {
+        Schema::table('peoples', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
         Schema::dropIfExists('peoples');
     }
 }

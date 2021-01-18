@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use App\users;
+use App\USERS;
 
-class registrationController extends Controller
+class registration_controller extends Controller
 {
     //registration
     function registration(Request $request){
@@ -15,13 +15,13 @@ class registrationController extends Controller
         $password = $request->input('password');
         $encryptedPassword = Crypt::encrypt($password);
 
-        $getCount = users::where('email', $email)->count();
+        $getCount = USERS::where('email', $email)->count();
 
         if($getCount != 0 ){
             return "User already exists";
         }
         else{
-           $result = users::insert([
+           $result = USERS::insert([
                 'name' => $name,
                 'email' => $email,
                 'password' => $encryptedPassword,
@@ -35,4 +35,5 @@ class registrationController extends Controller
             }
         }
     } 
+    
 }

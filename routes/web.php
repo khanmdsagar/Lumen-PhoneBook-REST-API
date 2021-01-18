@@ -1,4 +1,5 @@
 <?php
+
 $router->get('/', 'Controller@home');
 $router->get('/getallusers', 'Controller@getallusers');
 
@@ -17,7 +18,7 @@ $router->post('/onFileUpload', ['middleware' => 'auth', 'uses' => 'Controller@on
 
 
 //login & registration
-$router->post('/onRegistration', 'registrationController@registration');
+$router->post('/onRegistration', 'registration_controller@registration');
 
-$router->post('/onLogin', 'loginController@login');
+$router->post('/onLogin', 'login_controller@login');
 
